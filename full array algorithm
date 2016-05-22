@@ -1,0 +1,1153 @@
+<!DOCTEPY HTML>
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>全排列算法</title>
+<style type="text/css">
+#name
+{
+text-align:center;
+color:#ff3000;
+font-size:50px;
+margin:10px;
+}
+.hide{display:none;}
+#tab_t{
+height:40px;
+border-bottom:1px solid #ccc;
+border-radius: 10px;
+}
+#tab_t li{
+float:left;
+width:120px;
+height:40px;
+line-height:40px;
+margin:0 4px;
+text-align:center;
+border:1px solid #ccc;
+border-bottom:none;
+cursor:pointer;
+font-family:Comic Sans MS;
+font-size:27px;
+border-radius: 10px;
+background:#FFccFF;
+}
+#tab_t .act{
+position:relative;
+height:40px;
+margin-bottom:-1px;
+background:#FF99FF;
+}
+#tab_c{
+border:1px solid #ccc;
+border-top:none;
+padding:20px;
+height:1000px;
+width:1290px;
+border-radius: 20px;
+background:#f3fa9a;
+}
+input[type="text"] {
+font-size: 12px;
+border-radius: 6px;
+padding: 5px 10px;
+border: 1px solid #ddd;
+background-color:#99FFCC;
+}
+input[type="text2"] {
+font-size:12px;
+border-radius: 4px;
+padding: 0px 0px;
+width:29px;
+height:28px;
+border: 1px solid #ddd;
+background-color:#CCCCff; 
+}
+ul li{
+	font-famliy: verdana;
+	font-size: 20px;
+	font-weight: bold;
+    margin: 10px 0 10px 0;
+    list-style-type : none;
+}
+input[type="button"] {
+    background: #999;
+	border-radius: 4px;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    font-size: 12px;
+	width:100px;
+}
+
+input[type="button"]:hover,
+input[type="button"]:focus {
+    background: #777;
+}
+
+input[type="button"]:active {
+    background: #666;
+}
+#menu1
+{
+width:280px;
+height:980px;
+float:left;
+}
+#menu2
+{
+width:280px;
+height:980px;
+float:left;
+}
+#container1
+{
+width:900px;
+height=980px;
+float:left;
+padding:10px 10px;
+}
+#container2
+{
+width:900px;
+height=980px;
+float:left;
+padding:10px 10px;
+}
+.box{
+    float: left;
+	height: 30px;
+	width: 70px;
+	border: 2px solid #ddd;
+    text-align: center;
+}
+#myCanvas{
+            width: 500px;
+            height:500px;
+            border: 1px solid #000000;
+        }
+#cont1{
+width :500px;
+height:500px;
+float:left;
+}
+#cont2{
+width:40px;
+height:500px;
+float:left;
+}
+#canvas2{
+width:70px;
+height:500px;
+}
+#cont3{
+width:100px;
+float:left;
+border: 2px solid #f3fa9a;
+border-radius: 15px;
+padding:10px;
+margin:10px;
+height:500px;
+color:#556b2f;
+font-size:25px;
+background-color:#ffe0a0;
+}
+#steps{
+width:120px;
+height:40px;
+float:left;
+font-size:30px;
+margin:20px;
+background-color:#add8e6;
+border: 2px solid #f3fa9a;
+border-radius: 40px;
+text-align:center;
+}
+#canvas3{
+width:600px;
+height:200px;
+}
+#conte3{
+width:600px;
+height:200px;
+float:left;
+}
+#conte4{
+width:90px;
+float:left;
+border: 2px solid #f3fa9a;
+border-radius: 15px;
+padding:10px;
+margin:10px;
+height:500px;
+color:#556b2f;
+font-size:25px;
+background-color:#ffe0b0;
+}
+#stepmama{
+width:120px;
+height:40px;
+float:left;
+font-size:30px;
+margin:20px;
+background-color:#add8e6;
+border: 2px solid #f3fa9a;
+border-radius: 40px;
+text-align:center;
+}
+</style>
+<script type="text/javascript">
+window.onload=function(){
+var tab1=document.getElementById("x1");
+var tab2=document.getElementById("x2");
+var tab_t = document.getElementById("tab_t");
+var tab_t_li = tab_t.getElementsByTagName("li");
+tab_t_li[0].onclick=function(){
+tab1.className='';
+tab2.className='hide';
+tab_t_li[0].className='act';
+tab_t_li[1].className='';
+}
+tab_t_li[1].onclick=function(){
+tab2.className='';
+tab1.className='hide';
+tab_t_li[1].className='act';
+tab_t_li[0].className='';
+}
+}
+var sum;
+var arr=new Array();
+var brr=new Array();
+var test=0;
+function getsum1(xnumber){
+sum=xnumber;
+var c3= document.getElementById("canvas3");
+c3.width = 40*sum;
+c3.height = 40*2;
+if(c3.getContext){
+var ctx3 = c3.getContext("2d"),
+	width3 = c3.width,
+	height3= c3.height;
+	ctx3.lineWidth = 1;
+　　//先画横线
+	for(var i = 1; i * 40<=height3; i++ ){
+	ctx3.strokeStyle = "black";
+	ctx3.beginPath();
+	ctx3.moveTo(0,i * 40);
+	ctx3.lineTo(width3,i* 40);
+	ctx3.stroke();
+	}
+　　//再画纵线
+	for( var j = 0; j * 40 <=width3; j++ ){
+	ctx3.strokeStyle = "black";
+	ctx3.beginPath();
+	ctx3.moveTo(j * 40, 40);
+	ctx3.lineTo(j * 40, 80);
+	ctx3.stroke();
+	if(j*40<width3)
+	{
+	ctx3.fillStyle='#0000ff';
+	ctx3.fillRect(j*40+2,42,36,36);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	ctx3.font = 'bold 20px consolas';
+	ctx3.fillStyle = '#ffffff';
+	ctx3.fillText(brr[j],j*40+10,50);
+	}
+	}
+}
+}
+function addBox()
+{
+test=test+1;
+var para=document.createElement("div");
+para.className = "box";
+para.id=test;
+var element=document.getElementById("cont3");
+element.appendChild(para);
+}
+function deleteBox()
+{
+
+ var parent= document.getElementById("cont3");
+ var child=document.getElementById(test);
+ parent.removeChild(child);
+ test=test-1;
+}
+function getnum1(ynumber){
+arr[0]=ynumber;
+}
+function getnum2(ynumber){
+arr[1]=ynumber;
+}
+function getnum3(ynumber){
+arr[2]=ynumber;
+}
+function getnum4(ynumber){
+arr[3]=ynumber;
+}
+function getnum5(ynumber){
+arr[4]=ynumber;
+}
+function getnume1(ynumber){
+brr[0]=ynumber;
+}
+function getnume2(ynumber){
+brr[1]=ynumber;
+}
+function getnume3(ynumber){
+brr[2]=ynumber;
+}
+function getnume4(ynumber){
+brr[3]=ynumber;
+}
+function getnume5(ynumber){
+brr[4]=ynumber;
+}
+function play1(){
+	step=0;
+	re=0;
+ 	perm(0,sum-1);
+} 
+var sum2;
+var p=new Array(),b=new Array();  
+function getsum2(x)
+{
+	var i,j;
+	sum2=x;
+		var c= document.getElementById("myCanvas");
+        c.width = 40*sum2;
+        c.height = 40*sum2;
+        if(c.getContext){
+            var ctx = c.getContext("2d"),
+                width = c.width,
+                height = c.height;
+            ctx.lineWidth = 1;
+　　　　　　　//先画横线
+            for(  i = 1; i * 40 < height; i++ ){
+                ctx.strokeStyle = "black";
+                ctx.beginPath();
+                ctx.moveTo(0,i * 40);
+                ctx.lineTo(width,i* 40);
+                ctx.stroke();
+            }
+　　　　　　　//再画纵线
+            for(  j = 1; j * 40 < width; j++ ){
+                ctx.strokeStyle = "black";
+                ctx.beginPath();
+                ctx.moveTo(j * 40, 0);
+                ctx.lineTo(j * 40, height);
+                ctx.stroke();
+            }
+
+        }
+		for(  i = 0; i * 40 <height; i++ ){
+		for(  j = 0; j * 40 <width; j++ ){
+		ctx.font = 'bold 20px consolas';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.strokeStyle = 'red';
+		ctx.strokeText(arr[i], i*40+15,j*40+15);
+		}
+		}
+}
+var w=0;
+var time;
+var mark1=new Array();//标记应该执行哪一种画法；
+var mark2=new Array();//标记j;
+var mark3=new Array();//标记k;
+var pos=new Array();
+for(d=0;d<5;++d)
+{
+	pos[d]=new Array();
+	for(dd=0;dd<5;++dd)
+	{
+		pos[d][dd]=0;
+	}
+}
+function func(k,l)  
+{  
+    var j,i;  
+    for(j=0;j<l;j++)  
+    {  
+        if(p[j]==1)  
+        { 
+            b[k]=arr[j]; 
+			w=w+1;
+			mark1[w]=1;
+			mark2[w]=j;
+			mark3[w]=k;
+            p[j]=0;  
+            if(k<l)  
+                func(k+1,l); 
+            p[j]=1;  
+			w=w+1;
+			mark1[w]=2;
+			mark2[w]=j;
+			mark3[w]=k;
+        }  
+    }  
+}  
+function main(){  
+	var i;
+    for(i=0;i<sum2;i++)  
+        p[i]=1;
+	w=0;
+	func(1,sum2);
+} 
+var tiii;
+var qqqq1=0;
+function clock(qqqq)
+{
+qqqq1=qqqq1+1;
+document.getElementById("steps").innerHTML="step"+qqqq1;
+var j=mark2[qqqq1];
+var k=mark3[qqqq1];
+var i;
+if(mark1[qqqq1]==1)
+{
+			var c2=document.getElementById("canvas2");
+			c2.width = 70;
+			c2.height = 40*sum2;
+			var ctx2=c2.getContext("2d");
+				ctx2.lineWidth = 1;
+			for(  i = 0; i <sum2; i++ ){
+				if(i<k)
+               {
+			    ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#00ff00';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+				else
+				{
+				ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#f3fa9a';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+            }
+			var c= document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.textAlign = 'left';
+			ctx.fillStyle='#0000cd';
+			ctx.fillRect(j*40+6,(k-1)*40+6,28,28);
+			ctx.textBaseline = 'top';
+			ctx.font = 'bold 20px consolas';
+			ctx.fillStyle = 'red';
+			ctx.fillText(arr[j],j*40+15,(k-1)*40+15);
+			pos[k-1][j]=-10;
+			for(var v=1;v<=sum2;v++)
+			{ 
+				if(v!=k)
+				{
+				ctx.fillStyle='#0000ff';
+				ctx.fillRect(j*40+3,(v-1)*40+3,34,34);
+				pos[v-1][j]++;
+				}
+			}
+			for(i=0;i<sum2;i++)
+			{
+				if(i!=j)
+				{
+				ctx.fillStyle='#0000ff';
+				ctx.fillRect(i*40+3,(k-1)*40+3,34,34);
+				pos[k-1][i]++;
+				}
+			}
+}
+else if(mark1[qqqq1]==2)
+{
+			pos[k-1][j]=0;
+			var c= document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			var c2=document.getElementById("canvas2");
+			var ctx2=c2.getContext("2d");
+			var vv;
+			for( vv=0;vv<sum2;vv++)
+			{
+				if(pos[vv][j]>=1)
+					pos[vv][j]--;
+				if(pos[vv][j]==0)
+				{
+				ctx.fillStyle='#f3fa9a';
+				ctx.fillRect(j*40+3,vv*40+3,34,34);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				ctx.font = 'bold 20px consolas';
+				ctx.strokeStyle = 'red';
+				ctx.strokeText(arr[j], j*40+15,vv*40+15);
+				}
+			}
+			for(vv=0;vv<sum2;vv++)
+			{
+				if(pos[k-1][vv]>=1)
+					pos[k-1][vv]--;
+				if(pos[k-1][vv]==0)
+				{
+				ctx.fillStyle='#f3fa9a';
+				ctx.fillRect(vv*40+3,(k-1)*40+3,34,34);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				ctx.font = 'bold 20px consolas';
+				ctx.strokeStyle = 'red';
+				ctx.strokeText(arr[vv], vv*40+15,(k-1)*40+15);
+				}
+			}
+			for(  i = 0; i <sum2; i++ ){
+				if(i<k-1)
+               {
+			    ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#00ff00';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+				else
+				{
+				ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#f3fa9a';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+            }
+}
+if(k==sum2&&mark1[qqqq1]==1)
+{
+addBox();
+for(i=0;i<sum2;i++)
+{
+for(v=0;v<sum2;v++)
+{
+if(pos[i][v]==-10)
+{
+var oDiv=document.getElementById(test);
+var node=document.createTextNode(arr[v]);
+oDiv.appendChild(node);
+}
+}
+}
+}
+if(qqqq1<w)
+tiii=setTimeout("clock(qqqq1)",speed);
+}
+var speed=1000;
+function getspeed(v){
+speed=v;
+}
+function pause(){
+clearTimeout(tiii);
+}
+function next(){
+qqqq1=qqqq1+1;
+document.getElementById("steps").innerHTML="step"+qqqq1;
+var j=mark2[qqqq1];
+var k=mark3[qqqq1];
+var i;
+if(mark1[qqqq1]==1)
+{
+			var c2=document.getElementById("canvas2");
+			c2.width = 70;
+			c2.height = 40*sum2;
+			var ctx2=c2.getContext("2d");
+				ctx2.lineWidth = 1;
+			for(  i = 0; i <sum2; i++ ){
+				if(i<k)
+               {
+			    ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#00ff00';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+				else
+				{
+				ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#f3fa9a';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+            }
+			var c= document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.textAlign = 'left';
+			ctx.fillStyle='#0000cd';
+			ctx.fillRect(j*40+6,(k-1)*40+6,28,28);
+			ctx.textBaseline = 'top';
+			ctx.font = 'bold 20px consolas';
+			ctx.fillStyle = 'red';
+			ctx.fillText(arr[j],j*40+15,(k-1)*40+15);
+			pos[k-1][j]=-10;
+			for(var v=1;v<=sum2;v++)
+			{ 
+				if(v!=k)
+				{
+				ctx.fillStyle='#0000ff';
+				ctx.fillRect(j*40+3,(v-1)*40+3,34,34);
+				pos[v-1][j]++;
+				}
+			}
+			for(i=0;i<sum2;i++)
+			{
+				if(i!=j)
+				{
+				ctx.fillStyle='#0000ff';
+				ctx.fillRect(i*40+3,(k-1)*40+3,34,34);
+				pos[k-1][i]++;
+				}
+			}
+}
+else if(mark1[qqqq1]==2)
+{
+			pos[k-1][j]=0;
+			var c= document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			var c2=document.getElementById("canvas2");
+			var ctx2=c2.getContext("2d");
+			var vv;
+			for( vv=0;vv<sum2;vv++)
+			{
+				if(pos[vv][j]>=1)
+					pos[vv][j]--;
+				if(pos[vv][j]==0)
+				{
+				ctx.fillStyle='#f3fa9a';
+				ctx.fillRect(j*40+3,vv*40+3,34,34);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				ctx.font = 'bold 20px consolas';
+				ctx.strokeStyle = 'red';
+				ctx.strokeText(arr[j], j*40+15,vv*40+15);
+				}
+			}
+			for(vv=0;vv<sum2;vv++)
+			{
+				if(pos[k-1][vv]>=1)
+					pos[k-1][vv]--;
+				if(pos[k-1][vv]==0)
+				{
+				ctx.fillStyle='#f3fa9a';
+				ctx.fillRect(vv*40+3,(k-1)*40+3,34,34);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				ctx.font = 'bold 20px consolas';
+				ctx.strokeStyle = 'red';
+				ctx.strokeText(arr[vv], vv*40+15,(k-1)*40+15);
+				}
+			}
+			for(  i = 0; i <sum2; i++ ){
+				if(i<k-1)
+               {
+			    ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#00ff00';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+				else
+				{
+				ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#f3fa9a';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+            }
+}
+if(k==sum2&&mark1[qqqq1]==1)
+{
+addBox();
+for(i=0;i<sum2;i++)
+{
+for(v=0;v<sum2;v++)
+{
+if(pos[i][v]==-10)
+{
+var oDiv=document.getElementById(test);
+var node=document.createTextNode(arr[v]);
+oDiv.appendChild(node);
+}
+}
+}
+}
+}
+function reverse(){
+document.getElementById("steps").innerHTML="step"+(qqqq1-1);
+var j=mark2[qqqq1];
+var k=mark3[qqqq1];
+var i;
+if(mark1[qqqq1]==2)
+{
+			var c2=document.getElementById("canvas2");
+			c2.width = 70;
+			c2.height = 40*sum2;
+			var ctx2=c2.getContext("2d");
+				ctx2.lineWidth = 1;
+			for(  i = 0; i <sum2; i++ ){
+				if(i<k)
+               {
+			    ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#00ff00';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+				else
+				{
+				ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#f3fa9a';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+            }
+			var c= document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.textAlign = 'left';
+			ctx.fillStyle='#0000cd';
+			ctx.fillRect(j*40+6,(k-1)*40+6,28,28);
+			ctx.textBaseline = 'top';
+			ctx.font = 'bold 20px consolas';
+			ctx.fillStyle = 'red';
+			ctx.fillText(arr[j],j*40+15,(k-1)*40+15);
+			pos[k-1][j]=-10;
+			for(var v=1;v<=sum2;v++)
+			{ 
+				if(v!=k)
+				{
+				ctx.fillStyle='#0000ff';
+				ctx.fillRect(j*40+3,(v-1)*40+3,34,34);
+				pos[v-1][j]++;
+				}
+			}
+			for(i=0;i<sum2;i++)
+			{
+				if(i!=j)
+				{
+				ctx.fillStyle='#0000ff';
+				ctx.fillRect(i*40+3,(k-1)*40+3,34,34);
+				pos[k-1][i]++;
+				}
+			}
+}
+else if(mark1[qqqq1]==1)
+{
+			pos[k-1][j]=0;
+			var c= document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			var c2=document.getElementById("canvas2");
+			var ctx2=c2.getContext("2d");
+			var vv;
+			for( vv=0;vv<sum2;vv++)
+			{
+				if(pos[vv][j]>=1)
+					pos[vv][j]--;
+				if(pos[vv][j]==0)
+				{
+				ctx.fillStyle='#f3fa9a';
+				ctx.fillRect(j*40+3,vv*40+3,34,34);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				ctx.font = 'bold 20px consolas';
+				ctx.strokeStyle = 'red';
+				ctx.strokeText(arr[j], j*40+15,vv*40+15);
+				}
+			}
+			for(vv=0;vv<sum2;vv++)
+			{
+				if(pos[k-1][vv]>=1)
+					pos[k-1][vv]--;
+				if(pos[k-1][vv]==0)
+				{
+				ctx.fillStyle='#f3fa9a';
+				ctx.fillRect(vv*40+3,(k-1)*40+3,34,34);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				ctx.font = 'bold 20px consolas';
+				ctx.strokeStyle = 'red';
+				ctx.strokeText(arr[vv], vv*40+15,(k-1)*40+15);
+				}
+			}
+			for(  i = 0; i <sum2; i++ ){
+				if(i<k-1)
+               {
+			    ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#00ff00';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+				else
+				{
+				ctx2.textAlign = 'left';
+				ctx2.textBaseline = 'top';
+				ctx2.font = 'bold 15px consolas';
+				ctx2.fillStyle = '#f3fa9a';
+				ctx2.fillText("ok",15,i*40+15);
+				}
+            }
+			if(k==sum2)
+			{
+			deleteBox();
+			}
+}
+qqqq1--;
+}
+function play1(){
+	step=0;
+	re=0;
+ 	perm(0,sum-1);
+} 
+var testi=10000;
+function addBox2()
+{
+testi=testi+1;
+var para=document.createElement("div");
+para.className = "box";
+para.id=testi;
+var element=document.getElementById("conte4");
+element.appendChild(para);
+}
+function swap(i1,i2) {
+    var temp = brr[i2];
+    brr[i2] = brr[i1];
+    brr[i1] = temp;
+}
+var zzz1=new Array();//用来标记该进行哪一种操作
+var zzz2=new Array();
+var zzz3=new Array();
+var zzz4=new Array();
+var step,re;
+function perm(begin,end) {
+	var i,j,k=0,r=0;
+	step++;
+	zzz1[step]=1;
+	zzz2[step]=begin;
+	zzz3[step]=end;
+    if(end==begin)
+	{          
+		 return;
+    }
+    else 
+	{
+         for(j=begin;j<=end;j++)
+		 {    
+             swap(begin,j); 
+			 step++;
+			 zzz1[step]=2;
+			 zzz2[step]=begin;
+			 zzz3[step]=j;
+			 re++;
+			 zzz4[step]=re;
+             perm(begin+1,end); 
+             swap(begin,j);     
+			 step++;
+			 zzz1[step]=3;
+			 zzz2[step]=begin;
+			 zzz3[step]=j;
+			 re++;
+			 zzz4[step]=re;
+         }
+    }
+}
+var timi;
+var pppp1=0;
+function clocki(pppp)
+{
+pppp1=pppp1+1;
+var j=zzz2[pppp1];
+var k=zzz3[pppp1];
+var i;
+var c3= document.getElementById("canvas3");
+var ctx3 = c3.getContext("2d");
+	ctx3.lineWidth = 1;
+if(zzz1[pppp1]==1)
+{
+	for(i=0;i<sum;i++)
+	{
+		if(i<zzz2[pppp1])
+		{
+			ctx3.fillStyle='#ff0000';
+			ctx3.fillRect(i*40+2,42,36,36);
+			ctx3.textAlign = 'left';
+			ctx3.textBaseline = 'top';
+			ctx3.font = 'bold 20px consolas';
+			ctx3.fillStyle = '#ffffff';
+			
+			ctx3.fillText(brr[i],i*40+10,50);
+		}
+		else
+		{
+			ctx3.fillStyle='#0000ff';
+			ctx3.fillRect(i*40+2,42,36,36);
+			ctx3.textAlign = 'left';
+			ctx3.textBaseline = 'top';
+			ctx3.font = 'bold 20px consolas';
+			ctx3.fillStyle = '#ffffff';
+			ctx3.fillText(brr[i],i*40+10,50);
+		}
+	}
+	if(j==sum-1)
+	{
+	addBox2();
+	for(i=0;i<sum;i++)
+	{
+	var oDiv=document.getElementById(testi);
+	var node=document.createTextNode(brr[i]);
+	oDiv.appendChild(node);
+	}
+	}
+}
+
+if(zzz1[pppp1]==2||zzz1[pppp1]==3)
+{
+document.getElementById("stepmama").innerHTML="swap"+zzz4[pppp1];
+	ctx3.fillStyle='#f3fa9a';
+	ctx3.fillRect(0,0,40*sum,37);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	if(zzz1[pppp1]==2)
+	{
+	ctx3.font = 'bold 10px consolas';
+	ctx3.fillStyle = '#000000';
+	ctx3.fillText("change",(k+j)*20,0);
+	}
+	else if(zzz1[pppp1]==3)
+	{
+	ctx3.font = 'bold 8px consolas';
+	ctx3.fillStyle = '#000000';
+	ctx3.fillText("changeback",(k+j)*20-10,0);
+	}
+	ctx3.strokeStyle = "black";
+	ctx3.beginPath();
+	ctx3.moveTo(k*40+20,20);
+	ctx3.lineTo(j*40+20,20);
+	ctx3.stroke();
+	ctx3.beginPath();
+	ctx3.moveTo(j*40+20,20);
+	ctx3.lineTo(j*40+20,37);
+	ctx3.stroke();
+	ctx3.beginPath();
+	ctx3.moveTo(k*40+20,20);
+	ctx3.lineTo(k*40+20,37);
+	ctx3.stroke();
+	swap(k,j);
+	
+	ctx3.fillStyle='#0000ff';
+	ctx3.fillRect(k*40+2,42,36,36);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	ctx3.font = 'bold 20px consolas';
+	ctx3.fillStyle = '#ffffff';
+	ctx3.fillText(brr[k],k*40+10,50);
+	ctx3.fillStyle='#0000ff';
+	ctx3.fillRect(j*40+2,42,36,36);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	ctx3.font = 'bold 20px consolas';
+	ctx3.fillStyle = '#ffffff';
+	ctx3.fillText(brr[j],j*40+10,50);
+}
+if(pppp1<step)
+timi=setTimeout("clocki(pppp1)",speedi);
+}
+var speedi=2000;
+function getspeedi(sss)
+{
+speedi=sss;
+}
+function pausaaa(){
+clearTimeout(timi);
+}
+function nexti(){
+pppp1=pppp1+1;
+var j=zzz2[pppp1];
+var k=zzz3[pppp1];
+var i;
+var c3= document.getElementById("canvas3");
+var ctx3 = c3.getContext("2d");
+	ctx3.lineWidth = 1;
+if(zzz1[pppp1]==1)
+{
+	for(i=0;i<sum;i++)
+	{
+		if(i<zzz2[pppp1])
+		{
+			ctx3.fillStyle='#ff0000';
+			ctx3.fillRect(i*40+2,42,36,36);
+			ctx3.textAlign = 'left';
+			ctx3.textBaseline = 'top';
+			ctx3.font = 'bold 20px consolas';
+			ctx3.fillStyle = '#ffffff';
+			ctx3.fillText(brr[i],i*40+10,50);
+		}
+		else
+		{
+			ctx3.fillStyle='#0000ff';
+			ctx3.fillRect(i*40+2,42,36,36);
+			ctx3.textAlign = 'left';
+			ctx3.textBaseline = 'top';
+			ctx3.font = 'bold 20px consolas';
+			ctx3.fillStyle = '#ffffff';
+			ctx3.fillText(brr[i],i*40+10,50);
+		}
+	}
+	if(j==sum-1)
+	{
+	addBox2();
+	for(i=0;i<sum;i++)
+	{
+	var oDiv=document.getElementById(testi);
+	var node=document.createTextNode(brr[i]);
+	oDiv.appendChild(node);
+	}
+	}
+}
+
+if(zzz1[pppp1]==2||zzz1[pppp1]==3)
+{
+document.getElementById("stepmama").innerHTML="swap"+zzz4[pppp1];
+	ctx3.fillStyle='#f3fa9a';
+	ctx3.fillRect(0,0,40*sum,37);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	if(zzz1[pppp1]==2)
+	{
+	ctx3.font = 'bold 10px consolas';
+	ctx3.fillStyle = '#000000';
+	ctx3.fillText("change",(k+j)*20,0);
+	}
+	else if(zzz1[pppp1]==3)
+	{
+	ctx3.font = 'bold 8px consolas';
+	ctx3.fillStyle = '#000000';
+	ctx3.fillText("changeback",(k+j)*20-10,0);
+	}
+	ctx3.strokeStyle = "black";
+	ctx3.beginPath();
+	ctx3.moveTo(k*40+20,20);
+	ctx3.lineTo(j*40+20,20);
+	ctx3.stroke();
+	ctx3.beginPath();
+	ctx3.moveTo(j*40+20,20);
+	ctx3.lineTo(j*40+20,37);
+	ctx3.stroke();
+	ctx3.beginPath();
+	ctx3.moveTo(k*40+20,20);
+	ctx3.lineTo(k*40+20,37);
+	ctx3.stroke();
+	swap(k,j);
+	
+	ctx3.fillStyle='#0000ff';
+	ctx3.fillRect(k*40+2,42,36,36);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	ctx3.font = 'bold 20px consolas';
+	ctx3.fillStyle = '#ffffff';
+	ctx3.fillText(brr[k],k*40+10,50);
+	ctx3.fillStyle='#0000ff';
+	ctx3.fillRect(j*40+2,42,36,36);
+	ctx3.textAlign = 'left';
+	ctx3.textBaseline = 'top';
+	ctx3.font = 'bold 20px consolas';
+	ctx3.fillStyle = '#ffffff';
+	ctx3.fillText(brr[j],j*40+10,50);
+}
+}
+</script>
+
+</head>
+
+<body bgcolor="#EFEFEF">
+
+<p id="name"><b>全排列算法</b></p>
+
+ <ul id="tab_t">
+ <li class="act">回溯法</li> 
+ <li>交换法</li>
+ </ul>
+ 
+ <div id="tab_c">
+ 
+ <div   id="x1">
+ <div id="menu2">
+ <ul >	
+	<b>请输入元素（请务必先输入元素再输入元素个数）</br></b>
+	<input type="text2"  oninput="getnum1(this.value)">
+	<input type="text2"  oninput="getnum2(this.value)">
+	<input type="text2"  oninput="getnum3(this.value)">
+	<input type="text2"  oninput="getnum4(this.value)">
+	<input type="text2"  oninput="getnum5(this.value)">
+	<li><input type="text" placeholder="请输入元素个数(n<=5)" oninput="getsum2(this.value)"></li>
+	<li><input type="text" placeholder="请输入期望的速度(ms)" oninput="getspeed(this.value)"></li>
+	<li><input name="button" type="button" onClick="main();clock(0);" value="开始|继续"></li>
+	<li><input type="button" value="暂停" onClick="pause()"></li>
+	<li><input type="button" value="下一步" onClick="next()"></li> 
+	<li><input name="button2" type="button" onClick="reverse()" value="上一步"></li>
+ </ul>
+ </div>
+ 
+ <div id="container2">
+ <div id="cont1">
+ <canvas id="myCanvas"></canvas>
+ </div>
+ <div id="cont2">
+ <canvas id="canvas2"></canvas>
+ </div>
+ <div id="cont3">
+ </div>
+ <div id="steps">
+ step
+ </div>
+ </div>
+ 
+ </div>
+ 
+ <div  class="hide" id="x2">
+ 
+  <div id="menu1">
+ <ul >
+ 	<b>请输入元素（请务必先输入元素再输入元素个数）</br></b>
+	<input type="text2"  oninput="getnume1(this.value)">
+	<input type="text2"  oninput="getnume2(this.value)">
+	<input type="text2"  oninput="getnume3(this.value)">
+	<input type="text2"  oninput="getnume4(this.value)">
+	<input type="text2"  oninput="getnume5(this.value)">
+	<li><input type="text" placeholder="请输入元素个数(n<=5)" oninput="getsum1(this.value)"></li>
+	<li><input type="text" placeholder="请输入期望的速度(ms)" oninput="getspeedi(this.value)"></li>
+	<li><input name="button" type="button" onClick="play1();clocki(0);" value="开始|继续"></li>
+	<li><input type="button" value="暂停" onClick="pausaaa()"></li>
+	<li><input type="button" value="下一步" onClick="nexti()"></li> 
+	<h1 style="color:#FF0000">fixed</h1>
+ 	<h1 style="color:#0000FF">free</h1>
+ </ul>
+ </div>
+ 
+ <div id="container1">
+ 
+ <div id="conte3">
+ <canvas id="canvas3"></canvas>
+ </div>
+ 
+ <div id="conte4">
+ </div>
+ 
+ <div id="stepmama">
+ swap
+ </div>
+ 
+ </div>
+ 
+ </div>
+ 
+ </div>
+ 
+</body>
+
+</html>
